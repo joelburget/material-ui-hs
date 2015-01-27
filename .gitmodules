@@ -1,0 +1,3 @@
+[submodule "material-ui-js"]
+	path = material-ui-js
+	url = git@github.com:callemall/material-ui.git

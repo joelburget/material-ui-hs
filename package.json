@@ -1,0 +1,20 @@
+{
+  "name": "material-ui-hs",
+  "version": "0.0.1",
+  "description": "Material Design UI components in Haskell",
+  "main": "./Main.js.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "browserify": {},
+  "dependencies": {
+    "react": "^0.12.2",
+    "material-ui": "^0.5.0"
+  },
+  "devDependencies": {
+    "reactify": "^0.17.1",
+    "browserify": "^7.0.3"
+  }
+}
