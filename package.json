@@ -2,7 +2,7 @@
   "name": "material-ui-hs",
   "version": "0.0.1",
   "description": "Material Design UI components in Haskell",
-  "main": "./Main.js.js",
+  "main": "./mui.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,5 +16,18 @@
   "devDependencies": {
     "reactify": "^0.17.1",
     "browserify": "^7.0.3"
+  },
+  "haste-options": {
+      "in": "Main.hs",
+      "out": "mui.js",
+      "stubs": ["hs-stubs.js"],
+      "conversions": [
+          {
+              "hsTy": "String",
+              "jsTy": "JSString",
+              "hsToJs": "fromJS",
+              "jsToHs": "toJS"
+          }
+      ]
   }
 }
