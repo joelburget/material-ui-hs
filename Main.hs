@@ -3,37 +3,38 @@
 module Main where
 
 import Data.Void
-import Haste
-import Haste.DOM
-import Haste.Foreign
-import Haste.JSON
+
+import GHCJS.Types
+import GHCJS.DOM
+import GHCJS.DOM.Document
+
 import React hiding (label_)
 
-foreign import commonjs "React.createElement(require('material-ui').LeftNav, %1, %2)" mui_leftNav :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.LeftNav, $1, $2)" mui_leftNav :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').DropDownMenu, %1, %2)" mui_dropDownMenu :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.DropDownMenu, $1, $2)" mui_dropDownMenu :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').Snackbar, %1, %2)" mui_snackbar :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.Snackbar, $1, $2)" mui_snackbar :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').Paper, %1, %2)" mui_paper :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.Paper, $1, $2)" mui_paper :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').IconButton, %1, %2)" mui_iconButton :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.IconButton, $1, $2)" mui_iconButton :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').FlatButton, %1, %2)" mui_flatButton :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.FlatButton, $1, $2)" mui_flatButton :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').RaisedButton, %1, %2)" mui_raisedButton :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.RaisedButton, $1, $2)" mui_raisedButton :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').FloatingActionButton, %1, %2)" mui_floatingActionButton :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.FloatingActionButton, $1, $2)" mui_floatingActionButton :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').Slider, %1, %2)" mui_slider :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.Slider, $1, $2)" mui_slider :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').Checkbox, %1, %2)" mui_checkbox :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.Checkbox, $1, $2)" mui_checkbox :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').RadioButton, %1, %2)" mui_radioButton :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.RadioButton, $1, $2)" mui_radioButton :: RawAttrs -> ReactArray -> IO ForeignNode
 
-foreign import commonjs "React.createElement(require('material-ui').Toggle, %1, %2)" mui_toggle :: RawAttrs -> ReactArray -> IO ForeignNode
+foreign import javascript "React.createElement(MaterialUI.Toggle, $1, $2)" mui_toggle :: RawAttrs -> ReactArray -> IO ForeignNode
 
--- foreign export commonjs "myLabel" label_ :: JSString -> AttrOrHandler signal
+-- foreign export javascript "myLabel" label_ :: JSString -> AttrOrHandler signal
 
 -- attributes
 
@@ -148,6 +149,7 @@ toggle = foreignLeaf mui_toggle
 view :: () -> Pure React'
 view _ = div_ $ do
     raisedButton [ label_ "this. this is a button." ]
+
     dropDownMenu [ menuItems
             [ ( "1", "Never" )
             , ( "2", "Every Night" )
@@ -156,6 +158,7 @@ view _ = div_ $ do
             , ( "5", "Weekly" )
             ]
         ]
+
     snackbar [ message "Time for a snack", action "dismiss", openOnMount True ]
     -- leftNav [ menuItems [ ("1", "hello"), ("2", "world") ] ]
 
@@ -241,6 +244,8 @@ simpleClass :: IO (Pure ReactClass)
 simpleClass = createClass view transition () () []
 
 main :: IO ()
-main = withElem "inject" $ \elem -> do
+main = do
+    Just doc <- currentDocument
+    Just elem <- documentGetElementById doc ("inject" :: JSString)
     render elem =<< simpleClass
     return ()

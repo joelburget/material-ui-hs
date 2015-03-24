@@ -15,9 +15,8 @@ build-type:          Simple
 extra-source-files:  README.md
 cabal-version:       >=1.10
 
-library
-  exposed-modules:     Main
-  -- other-modules:
+executable example
+  main-is: Main.hs
   other-extensions:    OverloadedStrings, LiberalTypeSynonyms, JavaScriptFFI, LambdaCase
   build-depends:
     base >=4.7 && <4.8,
@@ -25,5 +24,18 @@ library
     react-haskell >=1.3 && <1.4,
     ghcjs-base,
     ghcjs-dom
-  hs-source-dirs:      .
   default-language:    Haskell2010
+  ghcjs-options: -DGHCJS_BROWSER
+
+-- library
+--   exposed-modules:     Main
+--   -- other-modules:
+--   other-extensions:    OverloadedStrings, LiberalTypeSynonyms, JavaScriptFFI, LambdaCase
+--   build-depends:
+--     base >=4.7 && <4.8,
+--     void >=0.7 && <0.8,
+--     react-haskell >=1.3 && <1.4,
+--     ghcjs-base,
+--     ghcjs-dom
+--   hs-source-dirs:      .
+--   default-language:    Haskell2010
