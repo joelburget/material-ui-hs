@@ -95,6 +95,9 @@ mini = mkStaticAttr "mini" Bool
 icon :: JSString -> AttrOrHandler signal
 icon = mkStaticAttr "icon" Str
 
+iconClassName :: JSString -> AttrOrHandler signal
+iconClassName = mkStaticAttr "iconClassName" Str
+
 tooltip :: JSString -> AttrOrHandler signal
 tooltip = mkStaticAttr "tooltip" Str
 
@@ -191,8 +194,8 @@ view _ = div_ $ do
         slider [ name "slider3", disabled True, value_ "1" ]
 
     div_ $ do
-        iconButton [ icon "action-grade", tooltip "star" ]
-        iconButton [ icon "action-grade", tooltip "star", disabled True ]
+        iconButton [ iconClassName "muidocs-icon-action-grade", tooltip "star" ]
+        iconButton [ iconClassName "muidocs-icon-action-grade", tooltip "star", disabled True ]
 
     div_ [ class_ "button-display" ] $ do
         div_ [class_ "button-group" ] $ do
@@ -208,12 +211,12 @@ view _ = div_ $ do
             raisedButton [ label_ "Disabled", disabled True ]
 
         div_ [class_ "button-group" ] $ do
-            floatingActionButton [ icon "action-grade" ]
-            floatingActionButton [ icon "action-grade", mini True ]
-            floatingActionButton [ icon "action-grade", disabled True ]
-            floatingActionButton [ icon "action-grade", mini True, disabled True ]
-            floatingActionButton [ icon "action-grade", secondary True ]
-            floatingActionButton [ icon "action-grade", mini True, secondary True ]
+            floatingActionButton [ iconClassName "muidocs-icon-action-grade" ]
+            floatingActionButton [ iconClassName "muidocs-icon-action-grade", mini True ]
+            floatingActionButton [ iconClassName "muidocs-icon-action-grade", disabled True ]
+            floatingActionButton [ iconClassName "muidocs-icon-action-grade", mini True, disabled True ]
+            floatingActionButton [ iconClassName "muidocs-icon-action-grade", secondary True ]
+            floatingActionButton [ iconClassName "muidocs-icon-action-grade", mini True, secondary True ]
 
     div_ [ class_ "paper-examples" ] $ do
 
