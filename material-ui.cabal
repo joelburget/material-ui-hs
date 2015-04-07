@@ -23,21 +23,22 @@ executable example
     void >=0.7 && <0.8,
     react-haskell >=1.3 && <1.4,
     ghcjs-base,
-    ghcjs-dom
+    ghcjs-dom,
+    material-ui
   default-language:    Haskell2010
   ghcjs-options: -DGHCJS_BROWSER
   js-sources:
     lib/stubs.js
 
--- library
---   exposed-modules:     Main
---   -- other-modules:
---   other-extensions:    OverloadedStrings, LiberalTypeSynonyms, JavaScriptFFI, LambdaCase
---   build-depends:
---     base >=4.7 && <4.8,
---     void >=0.7 && <0.8,
---     react-haskell >=1.3 && <1.4,
---     ghcjs-base,
---     ghcjs-dom
---   hs-source-dirs:      .
---   default-language:    Haskell2010
+library
+  exposed-modules:     React.MaterialUI
+  -- other-modules:
+  other-extensions:    OverloadedStrings, LiberalTypeSynonyms, JavaScriptFFI, LambdaCase
+  build-depends:
+    base >=4.7 && <4.8,
+    void >=0.7 && <0.8,
+    react-haskell >=1.3 && <1.4,
+    ghcjs-base,
+    ghcjs-dom
+  hs-source-dirs:      src
+  default-language:    Haskell2010
