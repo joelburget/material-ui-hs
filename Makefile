@@ -1,12 +1,15 @@
-.PHONY: build npm
+.PHONY: build
 
-build: mui.css mui.js
+build: mui.css mui.js sandbox/out.js
 
-npm:
+sandbox/out.js: Main.hs material-ui.cabal
+	cabal install --ghcjs
+
+node_modules:
 	npm install
 
-mui.css: npm mui.less
+mui.css: mui.less icons.less material-ui-js/docs/src/less/main.less
 	lessc mui.less mui.css
 
-mui.js: npm
-	haste-commonjs
+mui.js:
+	webpack

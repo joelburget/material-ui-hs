@@ -26,6 +26,8 @@ executable example
     ghcjs-dom
   default-language:    Haskell2010
   ghcjs-options: -DGHCJS_BROWSER
+  js-sources:
+    lib/stubs.js
 
 -- library
 --   exposed-modules:     Main

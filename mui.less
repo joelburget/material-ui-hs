@@ -1,10 +1,8 @@
-@import "material-ui-js/src/less/variables/colors.less";
-@import "material-ui-js/src/less/variables/custom-variables.less";
-@import "material-ui-js/src/less/variables/media-queries.less";
-@import "material-ui-js/src/less/variables/spacing.less";
+// TODO - figure out their demo page less
+// https://github.com/callemall/material-ui/tree/master/docs/src/less
 
-@import "material-ui-js/src/less/components.less";
-@import "material-ui-js/src/less/scaffolding.less";
+@import "icons.less";
+@import "material-ui-js/docs/src/less/main.less";
 
 .paper-examples .mui-paper {
     height: 100px;
@@ -31,4 +29,29 @@
 
 .checkbox-container .mui-checkbox {
     height: 18px;
+}
+
+.all-examples > div {
+    width: 1000px;
+}
+
+.example-image-input {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+}
+
+.mui-font-icon {
+  position: relative;
+  font-size: 24px;
+  display: inline-block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
