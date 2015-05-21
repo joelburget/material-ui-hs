@@ -24,7 +24,7 @@ executable example
   main-is: Main.hs
   other-extensions:    OverloadedStrings, LiberalTypeSynonyms, JavaScriptFFI, LambdaCase
   build-depends:
-    base >=4.7 && <4.8,
+    base >=4.7 && <4.9,
     void >=0.7 && <0.8,
     react-haskell >=1.3 && <1.4,
     ghcjs-base,
@@ -43,7 +43,7 @@ library
     React.MaterialUI.Imports
   other-extensions:    OverloadedStrings, LiberalTypeSynonyms, JavaScriptFFI, LambdaCase
   build-depends:
-    base >=4.7 && <4.8,
+    base >=4.7 && <4.9,
     void >=0.7 && <0.8,
     react-haskell >=1.3 && <1.4,
     ghcjs-base,
