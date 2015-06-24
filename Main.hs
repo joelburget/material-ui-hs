@@ -1,8 +1,9 @@
-{-# LANGUAGE OverloadedStrings, LiberalTypeSynonyms, JavaScriptFFI, LambdaCase #-}
+{-# LANGUAGE OverloadedStrings, LambdaCase, RebindableSyntax #-}
 
 module Main where
 
-import Control.Monad
+import Prelude hiding ((>>), return)
+import Data.String
 import Data.Void
 
 import GHCJS.Types
@@ -10,7 +11,8 @@ import GHCJS.Foreign
 import GHCJS.DOM
 import GHCJS.DOM.Document
 
-import React hiding (label_)
+import React
+import React.DOM hiding (label_)
 import React.MaterialUI
 
 -- TODO add type alias for parent / leaf
@@ -23,149 +25,178 @@ import React.MaterialUI
 stringMe :: String -> JSString
 stringMe = toJSString
 
-buttonExamples :: () -> Pure React'
-buttonExamples _ = div_ [ class_ "button-examples" ] $ do
+buttonExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+buttonExamples_ = classLeaf $ dumbClass
+    { name = "ButtonExamples"
+    , renderFn = \_ _ -> div_ [ class_ "button-examples" ] $ do
+        mconcat $ (flip map)
+            [ (flatButton, "flat"),
+              (raisedButton, "raised") ] $ \(button, ty) -> do
 
-    forM_ [ (flatButton, "flat"),
-            (raisedButton, "raised") ] $ \(button, ty) -> do
+            div_ [ class_ "button-example-group" ] $ do
+                div_ [ class_ "button-example-container" ] $
+                    button [ label_ "Default" ]
+                div_ [ class_ "button-example-container" ] $
+                    button [ label_ "Primary", primary True ]
+                div_ [ class_ "button-example-container" ] $
+                    button [ label_ "Secondary", secondary True ]
+                -- div_ [ class_ "button-example-container" ] $
+                --     button [ secondary True ] $ do
+                --         span_ [ class_ (stringMe $ "mui-" ++ ty ++ "-button-label example-image-button") ]
+                --             "Choose an Image"
+                --         input_ [ type_ "file", class_ "example-image-input" ]
+                -- div_ [ class_ "button-example-container" ] $
+                --     button [ linkButton_ True, href_ "https://github.com/callemall/material-ui", secondary True ] $ do
+                --         fontIcon_ [ class_ "muidocs-icon-custom-github example-flat-button-icon" ]
+                --         span_ [ class_ (stringMe $ "mui-" ++ ty ++ "-button-label example-icon-button-label") ] "Github"
+                div_ [ class_ "button-example-container" ] $
+                    button [ label_ "Disabled", disabled True ]
 
-        div_ [ class_ "button-example-group" ] $ do
-            div_ [ class_ "button-example-container" ] $
-                button [ label_ "Default" ] $ return ()
-            div_ [ class_ "button-example-container" ] $
-                button [ label_ "Primary", primary True ] $ return ()
-            div_ [ class_ "button-example-container" ] $
-                button [ label_ "Secondary", secondary True ] $ return ()
-            div_ [ class_ "button-example-container" ] $
-                button [ secondary True ] $ do
-                    span_ [ class_ (stringMe $ "mui-" ++ ty ++ "-button-label example-image-button") ]
-                        "Choose an Image"
-                    input_ [ type_ "file", class_ "example-image-input" ]
-            div_ [ class_ "button-example-container" ] $
-                button [ linkButton_ True, href_ "https://github.com/callemall/material-ui", secondary True ] $ do
-                    fontIcon_ [ class_ "muidocs-icon-custom-github example-flat-button-icon" ]
-                    span_ [ class_ (stringMe $ "mui-" ++ ty ++ "-button-label example-icon-button-label") ] "Github"
-            div_ [ class_ "button-example-container" ] $
-                button [ label_ "Disabled", disabled True ] $ return ()
+        div_ [ class_ "button-example-group" ] $ mconcat $ (flip map)
+            [ []
+            , [ mini True ]
+            , [ disabled True ]
+            , [ mini True, disabled True ]
+            , [ secondary True ]
+            , [ mini True, secondary True ] ] $ \attrs ->
+                floatingActionButton
+                    (iconClassName "muidocs-icon-action-grade":attrs)
+    }
 
-    div_ [ class_ "button-example-group" ] $ forM_
-        [ []
-        , [ mini True ]
-        , [ disabled True ]
-        , [ mini True, disabled True ]
-        , [ secondary True ]
-        , [ mini True, secondary True ] ] $ \attrs ->
-            floatingActionButton
-                (iconClassName "muidocs-icon-action-grade":attrs)
 
-dateExamples :: () -> Pure React'
-dateExamples _ = div_ $ do
-    datePicker_ [ hintText "Portrait Dialog" ]
-    datePicker_ [ hintText "Landscape Dialog", mode "landscape" ]
+dateExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+dateExamples_ = classLeaf $ dumbClass
+    { name = "DateExamples"
+    , renderFn = \_ _ -> div_ [] $ do
+        datePicker_ [ hintText "Portrait Dialog" ]
+        datePicker_ [ hintText "Landscape Dialog", mode "landscape" ]
+    }
 
-sliderExamples :: () -> Pure React'
-sliderExamples _ = div_ $ do
-    div_ [ class_ "slider-display" ] $ do
-        -- Default
-        slider [ name "slider1" ]
 
-        -- With starting value
-        slider [ name "slider2", defaultValueNum 0.5 ]
-        slider [ name "slider3", defaultValueNum 1 ]
+sliderExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+sliderExamples_ = classLeaf $ dumbClass
+    { name = "SliderExamples"
+    , renderFn = \_ _ -> div_ [] $ do
+        div_ [ class_ "slider-display" ] $ do
+            -- Default
+            slider [ name_ "slider1" ]
 
-        -- Disabled with fixed value
-        slider [ name "slider1", disabled True ]
-        slider [ name "slider2", disabled True, value_ "0.5" ]
-        slider [ name "slider3", disabled True, value_ "1" ]
+            -- With starting value
+            slider [ name_ "slider2", defaultValueNum 0.5 ]
+            slider [ name_ "slider3", defaultValueNum 1 ]
 
-checkboxExamples :: () -> Pure React'
-checkboxExamples _ = div_ [ class_ "switches-example-group" ] $ do
-    div_ [ class_ "switches-example-container" ] $
-        h2_ [ class_ "mui-font-style-headline" ] "Checkbox"
-    div_ [ class_ "switches-example-container" ] $
-        checkbox [ name "checkboxName1", value_ "checkboxValue1", label_ "went for a run today" ]
-    div_ [ class_ "switches-example-container" ] $
-        checkbox [ name "checkboxName2", value_ "checkboxValue2", label_ "fed the dog" ]
-    div_ [ class_ "switches-example-container" ] $
-        checkbox [ name "checkboxName3", value_ "checkboxValue3", label_ "built a house on the moon" ]
+            -- Disabled with fixed value
+            slider [ name_ "slider1", disabled True ]
+            slider [ name_ "slider2", disabled True, value_ "0.5" ]
+            slider [ name_ "slider3", disabled True, value_ "1" ]
+    }
 
-toggleExamples :: () -> Pure React'
-toggleExamples _ = div_ [ class_ "switches-example-group" ]$ do
-    div_ [ class_ "switches-example-container" ] $
-        h2_ [ class_ "mui-font-style-headline" ] "Toggle"
-    div_ [ class_ "switches-example-container" ] $
-        toggle [ name "toggleName1", value_ "toggleValue1", label_ "activate thrusters" ]
-    div_ [ class_ "switches-example-container" ] $
-            toggle [ name "toggleName2", value_ "toggleValue2", label_ "auto-pilot", defaultToggled True ]
-    div_ [ class_ "switches-example-container" ] $
-            toggle [ name "toggleName3", value_ "toggleValue3", label_ "initiate self-destruct sequence", disabled True ]
+checkboxExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+checkboxExamples_ = classLeaf $ dumbClass
+    { name = ""
+    , renderFn = \_ _ -> div_ [ class_ "switches-example-group" ] $ do
+        div_ [ class_ "switches-example-container" ] $
+            h2_ [ class_ "mui-font-style-headline" ] "Checkbox"
+        div_ [ class_ "switches-example-container" ] $
+            checkbox [ name_ "checkboxName1", value_ "checkboxValue1", label_ "went for a run today" ]
+        div_ [ class_ "switches-example-container" ] $
+            checkbox [ name_ "checkboxName2", value_ "checkboxValue2", label_ "fed the dog" ]
+        div_ [ class_ "switches-example-container" ] $
+            checkbox [ name_ "checkboxName3", value_ "checkboxValue3", label_ "built a house on the moon" ]
+    }
 
-radioButtonExamples :: () -> Pure React'
-radioButtonExamples _ = div_ [ class_ "switches-example-group" ] $ do
-    div_ [ class_ "switches-example-container" ] $
-        h2_ [ class_ "mui-font-style-headline" ] "Radio Buttons"
-    radioButtonGroup_ [ name "shipSpeed", defaultSelected "not_light" ] $ do
-        radioButton [ value_ "light", label_ "prepare for light speed" ]
-        radioButton [ value_ "not_light", label_ "light speed too slow" ]
-        radioButton [ value_ "ludicrous", label_ "go to ludicrous speed", disabled True ]
+toggleExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+toggleExamples_ = classLeaf $ dumbClass
+    { name = ""
+    , renderFn = \_ _ -> div_ [ class_ "switches-example-group" ]$ do
+        div_ [ class_ "switches-example-container" ] $
+            h2_ [ class_ "mui-font-style-headline" ] "Toggle"
+        div_ [ class_ "switches-example-container" ] $
+            toggle [ name_ "toggleName1", value_ "toggleValue1", label_ "activate thrusters" ]
+        div_ [ class_ "switches-example-container" ] $
+                toggle [ name_ "toggleName2", value_ "toggleValue2", label_ "auto-pilot", defaultToggled True ]
+        div_ [ class_ "switches-example-container" ] $
+                toggle [ name_ "toggleName3", value_ "toggleValue3", label_ "initiate self-destruct sequence", disabled True ]
+    }
 
-switchesExamples :: () -> Pure React'
-switchesExamples _ = div_ [] $ do
-    checkboxExamples ()
-    toggleExamples ()
-    radioButtonExamples ()
+-- radioButtonExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+-- radioButtonExamples_ = classLeaf $ dumbClass
+--     { name = ""
+--     , renderFn = \_ _ -> div_ [ class_ "switches-example-group" ] $ do
+--         div_ [ class_ "switches-example-container" ] $
+--             h2_ [ class_ "mui-font-style-headline" ] "Radio Buttons"
+--         radioButtonGroup_ [ name "shipSpeed", defaultSelected "not_light" ] $ do
+--             radioButton [ value_ "light", label_ "prepare for light speed" ]
+--             radioButton [ value_ "not_light", label_ "light speed too slow" ]
+--             radioButton [ value_ "ludicrous", label_ "go to ludicrous speed", disabled True ]
+--     }
 
-textFields :: () -> Pure React'
-textFields _ = div_ [ class_ "text-field-example" ] $ do
+switchesExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+switchesExamples_ = classLeaf $ dumbClass
+    { name = ""
+    , renderFn = \_ _ -> div_ [] $ do
+        checkboxExamples_ [] ()
+        toggleExamples_ [] ()
+        -- radioButtonExamples_ [] ()
+    }
 
-    div_ [ class_ "text-field-example-group text-field-example-single-line" ] $ do
-        textField_ [ hintText "Hint Text" ]
-        br_ []
-        textField_ [ hintText "Hint Text", defaultValueStr "Default Value" ]
-        br_ []
-        textField_ [ hintText "Hint Text" ]
-        br_ []
-        textField_ [ hintText "Hint Text" ]
-        br_ []
-        textField_ [ hintText "Hint Text (Multiline)", multiLine True ]
-        br_ []
-        textField_ [ hintText "Hint Text", defaultValueStr "abc" ]
-        br_ []
-        textField_ [ hintText "Hint Text", disabled True ]
-        br_ []
-        textField_ [ hintText "Hint Text", disabled True, defaultValueStr "Disabled With Value" ]
+textFields_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+textFields_ = classLeaf $ dumbClass
+    { name = ""
+    , renderFn = \_ _ -> div_ [ class_ "text-field-example" ] $ do
 
-    div_ [ class_ "text-field-example-group" ] $ do
-        textField_ [ hintText "Hint Text", floatingLabelText "Floating Label Text" ]
-        br_ []
-        textField_ [ hintText "Hint Text", defaultValueStr "Default Value", floatingLabelText "Floating Label Text" ]
-        br_ []
-        textField_ [ hintText "Hint Text", floatingLabelText "Floating Label Text" ]
-        br_ []
-        textField_ [ hintText "Hint Text", floatingLabelText "Floating Label Text" ]
-        br_ []
-        textField_ [ hintText "Hint Text (Multiline)", multiLine True, floatingLabelText "Floating Label Text" ]
-        br_ []
-        textField_ [ hintText "Hint Text", defaultValueStr "abc", floatingLabelText "Floating Label Text" ]
-        br_ []
-        textField_ [ hintText "Hint Text", disabled True, floatingLabelText "Floating Label Text" ]
-        br_ []
-        textField_ [ hintText "Hint Text", disabled True, defaultValueStr "Disabled With Value", floatingLabelText "Floating Label Text" ]
+        div_ [ class_ "text-field-example-group text-field-example-single-line" ] $ do
+            textField_ [ hintText "Hint Text" ]
+            br_ []
+            textField_ [ hintText "Hint Text", defaultValueStr "Default Value" ]
+            br_ []
+            textField_ [ hintText "Hint Text" ]
+            br_ []
+            textField_ [ hintText "Hint Text" ]
+            br_ []
+            textField_ [ hintText "Hint Text (Multiline)", multiLine True ]
+            br_ []
+            textField_ [ hintText "Hint Text", defaultValueStr "abc" ]
+            br_ []
+            textField_ [ hintText "Hint Text", disabled True ]
+            br_ []
+            textField_ [ hintText "Hint Text", disabled True, defaultValueStr "Disabled With Value" ]
 
-tabs :: () -> Pure React'
-tabs () = div_ [ class_ "tabs-examples" ] $
-    tabs_ [] $ do
-        tab_ [ label_ "Item One" ] $
-            div_ [ class_ "tab-template-container" ] $ do
-                h2_ [ class_ "mui-font-style-headline" ]
-                    "Tab One Template Example"
-                p_ [] "This is an example of a tab template!"
-                p_ [] "You can put any sort of HTML or react component in here."
-        tab_ [ label_ "Item Two" ] $
-            div_ [ class_ "tab-template-container" ] $ do
-                h2_ [ class_ "mui-font-style-headline" ]
-                    "Tab Two Template Example"
-                p_ [] "This is another example of a tab template!"
+        div_ [ class_ "text-field-example-group" ] $ do
+            textField_ [ hintText "Hint Text", floatingLabelText "Floating Label Text" ]
+            br_ []
+            textField_ [ hintText "Hint Text", defaultValueStr "Default Value", floatingLabelText "Floating Label Text" ]
+            br_ []
+            textField_ [ hintText "Hint Text", floatingLabelText "Floating Label Text" ]
+            br_ []
+            textField_ [ hintText "Hint Text", floatingLabelText "Floating Label Text" ]
+            br_ []
+            textField_ [ hintText "Hint Text (Multiline)", multiLine True, floatingLabelText "Floating Label Text" ]
+            br_ []
+            textField_ [ hintText "Hint Text", defaultValueStr "abc", floatingLabelText "Floating Label Text" ]
+            br_ []
+            textField_ [ hintText "Hint Text", disabled True, floatingLabelText "Floating Label Text" ]
+            br_ []
+            textField_ [ hintText "Hint Text", disabled True, defaultValueStr "Disabled With Value", floatingLabelText "Floating Label Text" ]
+    }
+
+-- tabs_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+-- tabs_ = classLeaf $ dumbClass
+--     { name = ""
+--     , renderFn = \_ _ -> div_ [ class_ "tabs-examples" ] $
+--         tabs_ [] $ do
+--             tab_ [ label_ "Item One" ] $
+--                 div_ [ class_ "tab-template-container" ] $ do
+--                     h2_ [ class_ "mui-font-style-headline" ]
+--                         "Tab One Template Example"
+--                     p_ [] "This is an example of a tab template!"
+--                     p_ [] "You can put any sort of HTML or react component in here."
+--             tab_ [ label_ "Item Two" ] $
+--                 div_ [ class_ "tab-template-container" ] $ do
+--                     h2_ [ class_ "mui-font-style-headline" ]
+--                         "Tab Two Template Example"
+--                     p_ [] "This is another example of a tab template!"
+--     }
 
 
 -- leftNavExamples :: Pure React'
@@ -185,96 +216,105 @@ tabs () = div_ [ class_ "tabs-examples" ] $
 --     leftNav [ ref "leftNav", docked False, menuItems items ]
 
 
-view :: () -> Pure React'
-view _ = div_ [ class_ "all-examples" ] $ do
-    buttonExamples ()
-    dateExamples ()
-    sliderExamples ()
-    switchesExamples ()
-    textFields ()
-    tabs ()
+view_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+view_ = classLeaf $ dumbClass
+    { name = ""
+    , renderFn = \_ _ -> div_ [ class_ "all-examples" ] $ do
+        buttonExamples_ [] ()
+        dateExamples_ [] ()
+        sliderExamples_ [] ()
+        switchesExamples_ [] ()
+        textFields_ [] ()
+        -- tabs_ [] ()
+    }
 
-view' :: () -> Pure React'
-view' _ = div_ $ do
-    raisedButton [ label_ "this. this is a button." ] $ return ()
+view'_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+view'_ = classLeaf $ dumbClass
+    { name = ""
+    , renderFn = \_ _ -> div_ [] $ do
+        raisedButton [ label_ "this. this is a button." ]
 
-    dropDownMenu [ menuItems
-            [ ( "1", "Never" )
-            , ( "2", "Every Night" )
-            , ( "3", "Weeknights" )
-            , ( "4", "Weekends" )
-            , ( "5", "Weekly" )
+        dropDownMenu [ menuItems
+                [ ( "1", "Never" )
+                , ( "2", "Every Night" )
+                , ( "3", "Weeknights" )
+                , ( "4", "Weekends" )
+                , ( "5", "Weekly" )
+                ]
             ]
-        ]
 
-    snackbar [ message "Time for a snack", action "dismiss", openOnMount True ]
-    -- leftNav [ menuItems [ ("1", "hello"), ("2", "world") ] ]
+        snackbar [ message "Time for a snack", action "dismiss", openOnMount True ]
+        -- leftNav [ menuItems [ ("1", "hello"), ("2", "world") ] ]
 
-    div_ [ class_ "example-block" ] $ do
-        form_ $ do
-            radioButton [ name "shipSpeed", value_ "light", label_ "prepare for light speed" ]
-            radioButton [ name "shipSpeed", value_ "not_light", label_ "light speed too slow", defaultChecked True ]
-            radioButton [ name "shipSpeed", value_ "ludicrous", label_ "go to ludicous speed" ]
+        div_ [ class_ "example-block" ] $
+            form_ [] $ do
+                radioButton [ name_ "shipSpeed", value_ "light", label_ "prepare for light speed" ]
+                radioButton [ name_ "shipSpeed", value_ "not_light", label_ "light speed too slow", defaultChecked True ]
+                radioButton [ name_ "shipSpeed", value_ "ludicrous", label_ "go to ludicous speed" ]
 
-    -- TODO why must one mui-toggle-wrap?
-    div_ [ class_ "example-block" ] $ div_ [ class_ "mui-toggle-wrap" ] $ toggle []
+        -- TODO why must one mui-toggle-wrap?
+        div_ [ class_ "example-block" ] $ div_ [ class_ "mui-toggle-wrap" ] $
+            toggle []
 
-    div_ $ do
-        iconButton [ iconClassName "muidocs-icon-action-grade", tooltip "star" ]
-        iconButton [ iconClassName "muidocs-icon-action-grade", tooltip "star", disabled True ]
+        div_ [] $ do
+            iconButton [ iconClassName "muidocs-icon-action-grade", tooltip "star" ]
+            iconButton [ iconClassName "muidocs-icon-action-grade", tooltip "star", disabled True ]
 
-    div_ [ class_ "button-display" ] $ do
-        div_ [class_ "button-group" ] $ do
-            flatButton [ label_ "Default" ] $ return ()
-            flatButton [ label_ "Primary", primary True ] $ return ()
-            flatButton [ label_ "Secondary", secondary True ] $ return ()
-            flatButton [ label_ "Disabled", disabled True ] $ return ()
+        div_ [ class_ "button-display" ] $ do
+            div_ [class_ "button-group" ] $ do
+                flatButton [ label_ "Default" ]
+                flatButton [ label_ "Primary", primary True ]
+                flatButton [ label_ "Secondary", secondary True ]
+                flatButton [ label_ "Disabled", disabled True ]
 
-        div_ [class_ "button-group" ] $ do
-            raisedButton [ label_ "Default" ] $ return ()
-            raisedButton [ label_ "Primary", primary True ] $ return ()
-            raisedButton [ label_ "Secondary", secondary True ] $ return ()
-            raisedButton [ label_ "Disabled", disabled True ] $ return ()
+            div_ [class_ "button-group" ] $ do
+                raisedButton [ label_ "Default" ]
+                raisedButton [ label_ "Primary", primary True ]
+                raisedButton [ label_ "Secondary", secondary True ]
+                raisedButton [ label_ "Disabled", disabled True ]
 
-        div_ [class_ "button-group" ] $ do
-            floatingActionButton [ iconClassName "muidocs-icon-action-grade" ]
-            floatingActionButton [ iconClassName "muidocs-icon-action-grade", mini True ]
-            floatingActionButton [ iconClassName "muidocs-icon-action-grade", disabled True ]
-            floatingActionButton [ iconClassName "muidocs-icon-action-grade", mini True, disabled True ]
-            floatingActionButton [ iconClassName "muidocs-icon-action-grade", secondary True ]
-            floatingActionButton [ iconClassName "muidocs-icon-action-grade", mini True, secondary True ]
+            div_ [class_ "button-group" ] $ do
+                floatingActionButton [ iconClassName "muidocs-icon-action-grade" ]
+                floatingActionButton [ iconClassName "muidocs-icon-action-grade", mini True ]
+                floatingActionButton [ iconClassName "muidocs-icon-action-grade", disabled True ]
+                floatingActionButton [ iconClassName "muidocs-icon-action-grade", mini True, disabled True ]
+                floatingActionButton [ iconClassName "muidocs-icon-action-grade", secondary True ]
+                floatingActionButton [ iconClassName "muidocs-icon-action-grade", mini True, secondary True ]
 
-    div_ [ class_ "paper-examples" ] $ do
+        div_ [ class_ "paper-examples" ] $ do
 
-        div_ [ class_ "paper-group" ] $ do
-            paper [ zDepth Z1 ]
-            paper [ zDepth Z2 ]
-            paper [ zDepth Z3 ]
-            paper [ zDepth Z4 ]
-            paper [ zDepth Z5 ]
+            div_ [ class_ "paper-group" ] $ do
+                paper [ zDepth Z1 ]
+                paper [ zDepth Z2 ]
+                paper [ zDepth Z3 ]
+                paper [ zDepth Z4 ]
+                paper [ zDepth Z5 ]
 
-        div_ [ class_ "paper-group" ] $ do
-            paper [ zDepth Z1, rounded False ]
-            paper [ zDepth Z2, rounded False ]
-            paper [ zDepth Z3, rounded False ]
-            paper [ zDepth Z4, rounded False ]
-            paper [ zDepth Z5, rounded False ]
+            div_ [ class_ "paper-group" ] $ do
+                paper [ zDepth Z1, rounded False ]
+                paper [ zDepth Z2, rounded False ]
+                paper [ zDepth Z3, rounded False ]
+                paper [ zDepth Z4, rounded False ]
+                paper [ zDepth Z5, rounded False ]
 
-        div_ [ class_ "paper-group" ] $ do
-            paper [ zDepth Z1, circle True ]
-            paper [ zDepth Z2, circle True ]
-            paper [ zDepth Z3, circle True ]
-            paper [ zDepth Z4, circle True ]
-            paper [ zDepth Z5, circle True ]
+            div_ [ class_ "paper-group" ] $ do
+                paper [ zDepth Z1, circle True ]
+                paper [ zDepth Z2, circle True ]
+                paper [ zDepth Z3, circle True ]
+                paper [ zDepth Z4, circle True ]
+                paper [ zDepth Z5, circle True ]
+    }
 
-transition = undefined
-
-simpleClass :: IO (Pure ReactClass)
-simpleClass = createClass view transition () () []
+pageWrapper_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+pageWrapper_ = classLeaf $ smartClass
+    { name = "PageWrapper"
+    , transition = undefined
+    , initialState = ()
+    , renderFn = \_ _ -> view_ [] ()
+    }
 
 main :: IO ()
 main = do
     Just doc <- currentDocument
     Just elem <- documentGetElementById doc ("inject" :: JSString)
-    render elem =<< simpleClass
-    return ()
+    render (pageWrapper_ [] ()) elem

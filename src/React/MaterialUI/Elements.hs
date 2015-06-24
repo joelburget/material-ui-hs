@@ -5,56 +5,56 @@ import Data.Void
 import React hiding (label_)
 import React.MaterialUI.Imports
 
-leftNav :: [AttrOrHandler Void] -> Pure React'
-leftNav = foreignLeaf mui_leftNav
+leftNav :: [AttrOrHandler Void] -> ReactNode Void
+leftNav attrs = foreignLeaf mui_leftNav attrs ()
 
-dropDownMenu :: [AttrOrHandler Void] -> Pure React'
-dropDownMenu = foreignLeaf mui_dropDownMenu
+dropDownMenu :: [AttrOrHandler Void] -> ReactNode Void
+dropDownMenu attrs = foreignLeaf mui_dropDownMenu attrs ()
 
-snackbar :: [AttrOrHandler Void] -> Pure React'
-snackbar = foreignLeaf mui_snackbar
+snackbar :: [AttrOrHandler Void] -> ReactNode Void
+snackbar attrs = foreignLeaf mui_snackbar attrs ()
 
-paper :: [AttrOrHandler Void] -> Pure React'
-paper = foreignLeaf mui_paper
+paper :: [AttrOrHandler Void] -> ReactNode Void
+paper attrs = foreignLeaf mui_paper attrs ()
 
-iconButton :: [AttrOrHandler Void] -> Pure React'
-iconButton = foreignLeaf mui_iconButton
+iconButton :: [AttrOrHandler Void] -> ReactNode Void
+iconButton attrs = foreignLeaf mui_iconButton attrs ()
 
-flatButton :: TermParent t => TermParentArg t -> t
-flatButton = foreignParent mui_flatButton
+flatButton :: [AttrOrHandler Void] -> ReactNode Void
+flatButton attrs = foreignLeaf mui_flatButton attrs ()
 
-raisedButton :: TermParent t => TermParentArg t -> t
-raisedButton = foreignParent mui_raisedButton
+raisedButton :: [AttrOrHandler Void] -> ReactNode Void
+raisedButton attrs = foreignLeaf mui_raisedButton attrs ()
 
-radioButtonGroup_ :: TermParent t => TermParentArg t -> t
-radioButtonGroup_ = foreignParent mui_radioButtonGroup
+-- radioButtonGroup_ :: [AttrOrHandler sig] -> ReactNode sig -> ReactNode sig
+-- radioButtonGroup_ = classParent mui_radioButtonGroup
 
-floatingActionButton :: [AttrOrHandler Void] -> Pure React'
-floatingActionButton = foreignLeaf mui_floatingActionButton
+floatingActionButton :: [AttrOrHandler Void] -> ReactNode Void
+floatingActionButton attrs = foreignLeaf mui_floatingActionButton attrs ()
 
-slider :: [AttrOrHandler Void] -> Pure React'
-slider = foreignLeaf mui_slider
+slider :: [AttrOrHandler Void] -> ReactNode Void
+slider attrs = foreignLeaf mui_slider attrs ()
 
-checkbox :: [AttrOrHandler Void] -> Pure React'
-checkbox = foreignLeaf mui_checkbox
+checkbox :: [AttrOrHandler Void] -> ReactNode Void
+checkbox attrs = foreignLeaf mui_checkbox attrs ()
 
-radioButton :: [AttrOrHandler Void] -> Pure React'
-radioButton = foreignLeaf mui_radioButton
+radioButton :: [AttrOrHandler Void] -> ReactNode Void
+radioButton attrs = foreignLeaf mui_radioButton attrs ()
 
-toggle :: [AttrOrHandler Void] -> Pure React'
-toggle = foreignLeaf mui_toggle
+toggle :: [AttrOrHandler Void] -> ReactNode Void
+toggle attrs = foreignLeaf mui_toggle attrs ()
 
-fontIcon_ :: [AttrOrHandler Void] -> Pure React'
-fontIcon_ = foreignLeaf mui_fontIcon
+fontIcon_ :: [AttrOrHandler Void] -> ReactNode Void
+fontIcon_ attrs = foreignLeaf mui_fontIcon attrs ()
 
-datePicker_ :: [AttrOrHandler Void] -> Pure React'
-datePicker_ = foreignLeaf mui_datePicker
+datePicker_ :: [AttrOrHandler Void] -> ReactNode Void
+datePicker_ attrs = foreignLeaf mui_datePicker attrs ()
 
-textField_ :: [AttrOrHandler Void] -> Pure React'
-textField_ = foreignLeaf mui_textField
+textField_ :: [AttrOrHandler Void] -> ReactNode Void
+textField_ attrs = foreignLeaf mui_textField attrs ()
 
-tabs_ :: TermParent t => TermParentArg t -> t
-tabs_ = foreignParent mui_tabs
+-- tabs_ :: [AttrOrHandler sig] -> ReactNode sig -> ReactNode sig
+-- tabs_ = classParent mui_tabs
 
-tab_ :: TermParent t => TermParentArg t -> t
-tab_ = foreignParent mui_tab
+-- tab_ :: [AttrOrHandler sig] -> ReactNode sig -> ReactNode sig
+-- tab_ = classParent mui_tab

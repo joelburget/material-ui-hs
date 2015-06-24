@@ -1,27 +1,37 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, DeriveGeneric #-}
 module React.MaterialUI.Attrs where
 
+import Data.Aeson
+import qualified Data.HashMap.Strict as H
+import Data.Text (Text)
+import qualified Data.Vector as V
+import GHC.Generics
+import GHCJS.Marshal
 import React
-import GHCJS.Types
 
-label_ :: JSString -> AttrOrHandler signal
-label_ = mkStaticAttr "label" Str
+label_ :: Text -> AttrOrHandler signal
+label_ = mkStaticAttr "label"
 
-menuItems :: [(JSString, JSString)] -> AttrOrHandler signal
-menuItems = mkStaticAttr "menuItems" $ Arr . map
-    (\(k, v) -> Dict [("payload", Str k), ("text", Str v)])
+menuItems :: [(Text, Text)] -> AttrOrHandler signal
+menuItems items = mkStaticAttr "menuItems" preEncoded where
+    preEncoded = Array (V.fromList objects)
+    encodeObject (k, v) = Object $ H.fromList
+        [ ("payload", String k)
+        , ("text", String v)
+        ]
+    objects = map encodeObject items
 
-message :: JSString -> AttrOrHandler signal
-message = mkStaticAttr "message" Str
+message :: Text -> AttrOrHandler signal
+message = mkStaticAttr "message"
 
-action :: JSString -> AttrOrHandler signal
-action = mkStaticAttr "action" Str
+action :: Text -> AttrOrHandler signal
+action = mkStaticAttr "action"
 
 docked :: Bool -> AttrOrHandler signal
-docked = mkStaticAttr "docked" Bool
+docked = mkStaticAttr "docked"
 
 openOnMount :: Bool -> AttrOrHandler signal
-openOnMount = mkStaticAttr "openOnMount" Bool
+openOnMount = mkStaticAttr "openOnMount"
 
 data ZDepth
     = Z1
@@ -29,74 +39,70 @@ data ZDepth
     | Z3
     | Z4
     | Z5
+    deriving Generic
 
-zdIx :: ZDepth -> Double
-zdIx Z1 = 1
-zdIx Z2 = 2
-zdIx Z3 = 3
-zdIx Z4 = 4
-zdIx Z5 = 5
+instance ToJSON ZDepth where
 
 zDepth :: ZDepth -> AttrOrHandler signal
-zDepth = mkStaticAttr "zDepth" (Num . zdIx)
+zDepth = mkStaticAttr "zDepth"
 
 rounded :: Bool -> AttrOrHandler signal
-rounded = mkStaticAttr "rounded" Bool
+rounded = mkStaticAttr "rounded"
 
 disabled :: Bool -> AttrOrHandler signal
-disabled = mkStaticAttr "disabled" Bool
+disabled = mkStaticAttr "disabled"
 
 circle :: Bool -> AttrOrHandler signal
-circle = mkStaticAttr "circle" Bool
+circle = mkStaticAttr "circle"
 
 primary :: Bool -> AttrOrHandler signal
-primary = mkStaticAttr "primary" Bool
+primary = mkStaticAttr "primary"
 
 secondary :: Bool -> AttrOrHandler signal
-secondary = mkStaticAttr "secondary" Bool
+secondary = mkStaticAttr "secondary"
 
 mini :: Bool -> AttrOrHandler signal
-mini = mkStaticAttr "mini" Bool
+mini = mkStaticAttr "mini"
 
-icon :: JSString -> AttrOrHandler signal
-icon = mkStaticAttr "icon" Str
+icon :: Text -> AttrOrHandler signal
+icon = mkStaticAttr "icon"
 
-iconClassName :: JSString -> AttrOrHandler signal
-iconClassName = mkStaticAttr "iconClassName" Str
+iconClassName :: Text -> AttrOrHandler signal
+iconClassName = mkStaticAttr "iconClassName"
 
-tooltip :: JSString -> AttrOrHandler signal
-tooltip = mkStaticAttr "tooltip" Str
+tooltip :: Text -> AttrOrHandler signal
+tooltip = mkStaticAttr "tooltip"
 
-name :: JSString -> AttrOrHandler signal
-name = mkStaticAttr "name" Str
+name_ :: Text -> AttrOrHandler signal
+name_ = mkStaticAttr "name"
 
 defaultValueNum :: Double -> AttrOrHandler signal
-defaultValueNum = mkStaticAttr "defaultValue" Num
+defaultValueNum = mkStaticAttr "defaultValue"
 
-defaultValueStr :: JSString -> AttrOrHandler signal
-defaultValueStr = mkStaticAttr "defaultValue" Str
+defaultValueStr :: Text -> AttrOrHandler signal
+defaultValueStr = mkStaticAttr "defaultValue"
 
 defaultChecked :: Bool -> AttrOrHandler signal
-defaultChecked = mkStaticAttr "defaultChecked" Bool
+defaultChecked = mkStaticAttr "defaultChecked"
 
 defaultToggled :: Bool -> AttrOrHandler signal
-defaultToggled = mkStaticAttr "defaultToggled" Bool
+defaultToggled = mkStaticAttr "defaultToggled"
 
-defaultSelected :: JSString -> AttrOrHandler signal
-defaultSelected = mkStaticAttr "defaultSelected" Str
+defaultSelected :: Text -> AttrOrHandler signal
+defaultSelected = mkStaticAttr "defaultSelected"
 
 linkButton_ :: Bool -> AttrOrHandler signal
-linkButton_ = mkStaticAttr "linkButton" Bool
+linkButton_ = mkStaticAttr "linkButton"
 
-hintText :: JSString -> AttrOrHandler signal
-hintText = mkStaticAttr "hintText" Str
+hintText :: Text -> AttrOrHandler signal
+hintText = mkStaticAttr "hintText"
 
-mode :: JSString -> AttrOrHandler signal
-mode = mkStaticAttr "mode" Str
+mode :: Text -> AttrOrHandler signal
+mode = mkStaticAttr "mode"
 
 multiLine :: Bool -> AttrOrHandler signal
-multiLine = mkStaticAttr "multiLine" Bool
+multiLine = mkStaticAttr "multiLine"
 
-floatingLabelText :: JSString -> AttrOrHandler signal
-floatingLabelText = mkStaticAttr "floatingLabelText" Str
+floatingLabelText :: Text -> AttrOrHandler signal
+floatingLabelText = mkStaticAttr "floatingLabelText"
 
