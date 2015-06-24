@@ -61,3 +61,5 @@ foreign import javascript "MaterialUI.Tabs"
 foreign import javascript "MaterialUI.Tab"
     mui_tab :: JSAny
 
+foreign import javascript "MaterialUI.Styles.ThemeManager().getCurrentTheme()"
+    mui_theme :: JSAny

@@ -3,6 +3,7 @@
 module Main where
 
 import Prelude hiding ((>>), return)
+import qualified Data.HashMap.Strict as H
 import Data.String
 import Data.Void
 
@@ -28,6 +29,10 @@ stringMe = toJSString
 buttonExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
 buttonExamples_ = classLeaf $ dumbClass
     { name = "ButtonExamples"
+    , renderFn = \_ _ -> div_ [ class_ "button-examples" ] "test"
+    }
+
+{-
     , renderFn = \_ _ -> div_ [ class_ "button-examples" ] $ do
         mconcat $ (flip map)
             [ (flatButton, "flat"),
@@ -62,6 +67,7 @@ buttonExamples_ = classLeaf $ dumbClass
                 floatingActionButton
                     (iconClassName "muidocs-icon-action-grade":attrs)
     }
+-}
 
 
 dateExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
@@ -218,7 +224,7 @@ textFields_ = classLeaf $ dumbClass
 
 view_ :: [AttrOrHandler Void] -> () -> ReactNode Void
 view_ = classLeaf $ dumbClass
-    { name = ""
+    { name = "view"
     , renderFn = \_ _ -> div_ [ class_ "all-examples" ] $ do
         buttonExamples_ [] ()
         dateExamples_ [] ()
@@ -308,9 +314,10 @@ view'_ = classLeaf $ dumbClass
 pageWrapper_ :: [AttrOrHandler Void] -> () -> ReactNode Void
 pageWrapper_ = classLeaf $ smartClass
     { name = "PageWrapper"
-    , transition = undefined
+    , transition = \(state, _) -> (state, Nothing)
     , initialState = ()
     , renderFn = \_ _ -> view_ [] ()
+    , childContext = Just (H.singleton "muiTheme" mui_theme)
     }
 
 main :: IO ()

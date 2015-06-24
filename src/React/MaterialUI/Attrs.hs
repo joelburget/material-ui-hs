@@ -1,11 +1,10 @@
-{-# LANGUAGE OverloadedStrings, DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 module React.MaterialUI.Attrs where
 
 import Data.Aeson
 import qualified Data.HashMap.Strict as H
 import Data.Text (Text)
 import qualified Data.Vector as V
-import GHC.Generics
 import GHCJS.Marshal
 import React
 
@@ -39,9 +38,15 @@ data ZDepth
     | Z3
     | Z4
     | Z5
-    deriving Generic
+
 
 instance ToJSON ZDepth where
+    toJSON Z1 = Number 1
+    toJSON Z2 = Number 2
+    toJSON Z3 = Number 3
+    toJSON Z4 = Number 4
+    toJSON Z5 = Number 5
+
 
 zDepth :: ZDepth -> AttrOrHandler signal
 zDepth = mkStaticAttr "zDepth"
