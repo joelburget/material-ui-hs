@@ -1,8 +1,15 @@
+{-# LANGUAGE CPP #-}
+
+#ifdef __GHCJS__
 {-# LANGUAGE JavaScriptFFI #-}
+#endif
+
 module React.MaterialUI.Imports where
 
 import React
--- import GHCJS.Foreign
+import React.GHCJS
+
+#ifdef __GHCJS__
 
 foreign import javascript "MaterialUI.LeftNav"
     mui_leftNav :: JSAny
@@ -63,3 +70,30 @@ foreign import javascript "MaterialUI.Tab"
 
 foreign import javascript "MaterialUI.Styles.ThemeManager().getCurrentTheme()"
     mui_theme :: JSAny
+
+#else
+
+mui_leftNav, mui_dropDownMenu, mui_snackbar, mui_paper, mui_iconButton, mui_flatButton, mui_raisedButton, mui_floatingActionButton, mui_slider, mui_checkbox, mui_radioButton, mui_toggle, mui_linkButton, mui_fontIcon, mui_datePicker, mui_textField, mui_radioButtonGroup, mui_tabs, mui_tab, mui_theme :: JSAny
+
+mui_leftNav = undefined
+mui_dropDownMenu = undefined
+mui_snackbar = undefined
+mui_paper = undefined
+mui_iconButton = undefined
+mui_flatButton = undefined
+mui_raisedButton = undefined
+mui_floatingActionButton = undefined
+mui_slider = undefined
+mui_checkbox = undefined
+mui_radioButton = undefined
+mui_toggle = undefined
+mui_linkButton = undefined
+mui_fontIcon = undefined
+mui_datePicker = undefined
+mui_textField = undefined
+mui_radioButtonGroup = undefined
+mui_tabs = undefined
+mui_tab = undefined
+mui_theme = undefined
+
+#endif

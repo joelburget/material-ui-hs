@@ -5,8 +5,8 @@ import Data.Aeson
 import qualified Data.HashMap.Strict as H
 import Data.Text (Text)
 import qualified Data.Vector as V
-import GHCJS.Marshal
 import React
+import React.GHCJS
 
 label_ :: Text -> AttrOrHandler signal
 label_ = mkStaticAttr "label"
