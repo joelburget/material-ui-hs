@@ -31,7 +31,6 @@ executable example
   other-extensions:    OverloadedStrings, LiberalTypeSynonyms, JavaScriptFFI, LambdaCase
   build-depends:
     base > 4.5 && < 5,
-    void >=0.7 && <0.8,
     react-haskell == 1.4.*,
     unordered-containers,
     material-ui
@@ -53,7 +52,6 @@ library
   other-extensions:    OverloadedStrings, LiberalTypeSynonyms, JavaScriptFFI, LambdaCase, CPP
   build-depends:
     base > 4.5 && < 5,
-    void >=0.7 && <0.8,
     react-haskell == 1.4.*,
     aeson,
     text,

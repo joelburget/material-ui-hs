@@ -26,7 +26,7 @@ import React.MaterialUI
 stringMe :: String -> JSString
 stringMe = toJSString
 
-buttonExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+buttonExamples_ :: [AttrOrHandler a] -> () -> ReactNode a
 buttonExamples_ = classLeaf $ dumbClass
     { name = "ButtonExamples"
     , renderFn = \_ _ -> div_ [ class_ "button-examples" ] "test"
@@ -70,7 +70,7 @@ buttonExamples_ = classLeaf $ dumbClass
 -}
 
 
-dateExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+dateExamples_ :: [AttrOrHandler a] -> () -> ReactNode a
 dateExamples_ = classLeaf $ dumbClass
     { name = "DateExamples"
     , renderFn = \_ _ -> div_ [] $ do
@@ -79,7 +79,7 @@ dateExamples_ = classLeaf $ dumbClass
     }
 
 
-sliderExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+sliderExamples_ :: [AttrOrHandler a] -> () -> ReactNode a
 sliderExamples_ = classLeaf $ dumbClass
     { name = "SliderExamples"
     , renderFn = \_ _ -> div_ [] $ do
@@ -97,7 +97,7 @@ sliderExamples_ = classLeaf $ dumbClass
             slider [ name_ "slider3", disabled True, value_ "1" ]
     }
 
-checkboxExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+checkboxExamples_ :: [AttrOrHandler a] -> () -> ReactNode a
 checkboxExamples_ = classLeaf $ dumbClass
     { name = ""
     , renderFn = \_ _ -> div_ [ class_ "switches-example-group" ] $ do
@@ -111,7 +111,7 @@ checkboxExamples_ = classLeaf $ dumbClass
             checkbox [ name_ "checkboxName3", value_ "checkboxValue3", label_ "built a house on the moon" ]
     }
 
-toggleExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+toggleExamples_ :: [AttrOrHandler a] -> () -> ReactNode a
 toggleExamples_ = classLeaf $ dumbClass
     { name = ""
     , renderFn = \_ _ -> div_ [ class_ "switches-example-group" ]$ do
@@ -125,7 +125,7 @@ toggleExamples_ = classLeaf $ dumbClass
                 toggle [ name_ "toggleName3", value_ "toggleValue3", label_ "initiate self-destruct sequence", disabled True ]
     }
 
--- radioButtonExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+-- radioButtonExamples_ :: [AttrOrHandler a] -> () -> ReactNode a
 -- radioButtonExamples_ = classLeaf $ dumbClass
 --     { name = ""
 --     , renderFn = \_ _ -> div_ [ class_ "switches-example-group" ] $ do
@@ -137,7 +137,7 @@ toggleExamples_ = classLeaf $ dumbClass
 --             radioButton [ value_ "ludicrous", label_ "go to ludicrous speed", disabled True ]
 --     }
 
-switchesExamples_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+switchesExamples_ :: [AttrOrHandler a] -> () -> ReactNode a
 switchesExamples_ = classLeaf $ dumbClass
     { name = ""
     , renderFn = \_ _ -> div_ [] $ do
@@ -146,7 +146,7 @@ switchesExamples_ = classLeaf $ dumbClass
         -- radioButtonExamples_ [] ()
     }
 
-textFields_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+textFields_ :: [AttrOrHandler a] -> () -> ReactNode a
 textFields_ = classLeaf $ dumbClass
     { name = ""
     , renderFn = \_ _ -> div_ [ class_ "text-field-example" ] $ do
@@ -186,7 +186,7 @@ textFields_ = classLeaf $ dumbClass
             textField_ [ hintText "Hint Text", disabled True, defaultValueStr "Disabled With Value", floatingLabelText "Floating Label Text" ]
     }
 
--- tabs_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+-- tabs_ :: [AttrOrHandler a] -> () -> ReactNode a
 -- tabs_ = classLeaf $ dumbClass
 --     { name = ""
 --     , renderFn = \_ _ -> div_ [ class_ "tabs-examples" ] $
@@ -222,7 +222,7 @@ textFields_ = classLeaf $ dumbClass
 --     leftNav [ ref "leftNav", docked False, menuItems items ]
 
 
-view_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+view_ :: [AttrOrHandler a] -> () -> ReactNode a
 view_ = classLeaf $ dumbClass
     { name = "view"
     , renderFn = \_ _ -> div_ [ class_ "all-examples" ] $ do
@@ -234,7 +234,7 @@ view_ = classLeaf $ dumbClass
         -- tabs_ [] ()
     }
 
-view'_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+view'_ :: [AttrOrHandler a] -> () -> ReactNode a
 view'_ = classLeaf $ dumbClass
     { name = ""
     , renderFn = \_ _ -> div_ [] $ do
@@ -311,7 +311,7 @@ view'_ = classLeaf $ dumbClass
                 paper [ zDepth Z5, circle True ]
     }
 
-pageWrapper_ :: [AttrOrHandler Void] -> () -> ReactNode Void
+pageWrapper_ :: [AttrOrHandler a] -> () -> ReactNode a
 pageWrapper_ = classLeaf $ smartClass
     { name = "PageWrapper"
     , transition = \(state, _) -> (state, Nothing)
