@@ -5,16 +5,12 @@ module Main where
 import Prelude hiding ((>>), return)
 import qualified Data.HashMap.Strict as H
 import Data.String
-import Data.Void
-
-import GHCJS.Types
-import GHCJS.Foreign
-import GHCJS.DOM
-import GHCJS.DOM.Document
 
 import React
+import React.GHCJS
 import React.DOM hiding (label_)
 import React.MaterialUI
+import React.Rebindable
 
 -- TODO add type alias for parent / leaf
 -- TODO add things like button_' (for leaf button) (that's gross naming
